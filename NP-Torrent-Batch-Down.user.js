@@ -1,13 +1,16 @@
 // ==UserScript==
 // @name         PT种子批量下载
+// @name:en      NexusPHP PT torrents batch download
+// @version      0.0.2
 // @namespace    http://tampermonkey.net/
 // @version      1.1
 // @description  PT种子批量下载插件
+// @description:en  NexusPHP PT torrents batch download
 // @author       sdcjj
 // @match        https://**/userdetails.php**
 // @match        https://**/torrents.php**
 // @grant        none
-// @license MIT
+// @license      MIT
 // @downloadURL  https://github.com/sdcjj/monkey/blob/main/NP-Torrent-Batch-Down.user.js
 // @updateURL    https://raw.githubusercontent.com/sdcjj/monkey/blob/main/NP-Torrent-Batch-Down.user.js
 // ==/UserScript==
