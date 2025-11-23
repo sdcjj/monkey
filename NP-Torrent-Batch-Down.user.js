@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PT种子批量下载
 // @name:en      NexusPHP PT torrents batch download
-// @version      0.0.2
+// @version      1.2
 // @namespace    http://tampermonkey.net/
 // @version      1.1
 // @description  PT种子批量下载插件
