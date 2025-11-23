@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PT种子批量下载
 // @name:en      NexusPHP PT torrents batch download
-// @version      1.2
+// @version      1.3
 // @namespace    http://tampermonkey.net/
 // @description  PT种子批量下载插件
 // @description:en  NexusPHP PT torrents batch download Plugin
@@ -42,7 +42,10 @@
     }
 
     async function down_torr() {
-        init_down_count('inclbookmarked=');
+        let count= init_down_count('inclbookmarked=');
+        if (!count || count <= 0) {
+            return;
+        }
         init_down_num();
         var torrIds = [];
         await down_page(".torrents", torrIds);
@@ -53,8 +56,13 @@
         if (!count || count <= 0) {
             return;
         }
+        var parentId = "";
         let paginationDiv = document.querySelector('.nexus-pagination');
-        let parentId = paginationDiv.parentElement.id;
+        if (paginationDiv == null) {
+            parentId = findUserParentDiv();
+        } else {
+            parentId = paginationDiv.parentElement.id;
+        }
 
         var torrIds = [];
         for (let i = 0; i < count; i++) {
@@ -161,25 +169,56 @@
     function init_down_count(tag) {
         let firstPagination = document.querySelector('.nexus-pagination');
         if (!firstPagination) {
-            alert('未找到种子列表，请先展开种子列表');
-            return;
+            let parentId = findUserParentDiv();
+            if (parentId) {
+                document.getElementById('xx_input_down_count').value = 1;
+                return 1;
+            }
+            if(tag=="inclbookmarked="){
+                firstPagination=document.querySelector("#outer table.main p")
+            }else{
+                alert('未找到种子列表，请先展开种子列表');
+                return 0;
+            }
         }
         let paginationLinks = firstPagination.querySelectorAll('a');
         var count = 0;
         paginationLinks.forEach(function (link) {
             let href = link.href;
-            if (href.indexOf(tag) > 0) {
-                let url = new URL(href);
-                let params = url.searchParams;
-                let currentPage = parseInt(params.get("page")) || 0;
-                if (currentPage > count) {
-                    count = currentPage;
-                }
+            let url = new URL(href);
+            let params = url.searchParams;
+            let currentPage = parseInt(params.get("page")) || 0;
+            if (currentPage > count) {
+                count = currentPage;
             }
         })
         document.getElementById('xx_input_down_count').value = count + 1;
         return count + 1;
     }
+    function findUserParentDiv() {
+        const ka1 = document.getElementById('ka1');
+        const ka2 = document.getElementById('ka2');
+        const ka3 = document.getElementById('ka3');
+        const ka4 = document.getElementById('ka4');
+        const ka5 = document.getElementById('ka5');
+        if (ka1 && ka1.innerText) {
+            return 'ka1';
+        }
+        if (ka2 && ka2.innerText) {
+            return 'ka2';
+        }
+        if (ka3 && ka3.innerText) {
+            return 'ka3';
+        }
+        if (ka4 && ka4.innerText) {
+            return 'ka4';
+        }
+        if (ka5 && ka5.innerText) {
+            return 'ka5';
+        }
+        return null;
+    }
+
     function init_down_num() {
         let url = new URL(window.location.href);
         let params = url.searchParams;
@@ -187,7 +226,12 @@
         document.getElementById('xx_input_down_num').textContent = "第" + (currentPage + 1) + "页";
     }
     function init_user_down_num() {
-        let pageFonts = document.querySelectorAll('.nexus-pagination font');
+        let firstPagination = document.querySelector('.nexus-pagination');
+        if (!firstPagination) {
+            document.getElementById('xx_input_down_num').textContent = "第1页";
+            return;
+        }
+        let pageFonts = firstPagination.querySelectorAll('.nexus-pagination font');
         for (const pageFont of pageFonts) {
             if (pageFont.textContent.indexOf('页') > 0) {
                 continue;
