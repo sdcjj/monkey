@@ -3,9 +3,8 @@
 // @name:en      NexusPHP PT torrents batch download
 // @version      1.2
 // @namespace    http://tampermonkey.net/
-// @version      1.1
 // @description  PT种子批量下载插件
-// @description:en  NexusPHP PT torrents batch download
+// @description:en  NexusPHP PT torrents batch download Plugin
 // @author       sdcjj
 // @match        https://**/userdetails.php**
 // @match        https://**/torrents.php**
